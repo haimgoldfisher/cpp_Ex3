@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <algorithm>
 using namespace std;
 
 #include "Fraction.hpp"
@@ -16,6 +17,11 @@ namespace ariel
         // }
         this->numerator = top;
         this->denominator = bottom;
+    }
+
+    Fraction::Fraction(float num) // ctor: float
+    {
+        this->numerator = this->denominator = num;
     }
 
     int Fraction::getTop()
@@ -37,5 +43,14 @@ namespace ariel
     {
         this->denominator = newBottom;
     }
-    
+
+    Fraction& Fraction::reduce()
+    {
+        return *this;
+    }
+
+    ostream& operator<< (ostream& os, const Fraction& frac) 
+    {
+        return (os << frac.numerator << '/' << frac.denominator);
+    }
 }
