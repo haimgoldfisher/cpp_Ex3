@@ -31,5 +31,6 @@
 *.out
 *.app
 
-# vscode file
-vscode
+# vscode folder & gitignore
+.gitignore
+vscode/
