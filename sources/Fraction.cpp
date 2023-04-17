@@ -19,7 +19,7 @@ namespace ariel
         this->denominator = bottom;
     }
 
-    Fraction::Fraction(float num) // ctor: float
+    Fraction::Fraction(float num) // ctor: float casting to fraction
     {
         this->numerator = this->denominator = num;
     }
@@ -46,11 +46,111 @@ namespace ariel
 
     Fraction& Fraction::reduce()
     {
-        return *this;
+        return *this; // implement later
     }
 
     ostream& operator<< (ostream& os, const Fraction& frac) 
     {
         return (os << frac.numerator << '/' << frac.denominator);
+    }
+
+    istream& operator>> (istream& is, const Fraction& frac)
+    {
+        return is;  // implement later
+    }
+
+    Fraction Fraction::operator+(const Fraction& other) const
+    {
+        return Fraction(this->numerator + other.numerator, this->denominator + other.denominator); // IMPLEMENTION LATER
+    }
+
+    Fraction Fraction::operator-(const Fraction& other) const
+    {
+        return Fraction(this->numerator - other.numerator, this->denominator - other.denominator); // IMPLEMENTION LATER
+    }
+
+    Fraction Fraction::operator*(const Fraction& other) const
+    {
+        return Fraction(this->numerator - other.numerator, this->denominator - other.denominator); // IMPLEMENTION LATER
+    }
+
+    Fraction Fraction::operator/(const Fraction& other) const
+    {
+        return Fraction(this->numerator - other.numerator, this->denominator - other.denominator); // IMPLEMENTION LATER
+    }
+
+    const Fraction operator+ (const Fraction& frac, float num)
+    {
+        return Fraction(frac.numerator + num, frac.denominator);  // IMPLEMENTION LATER
+    }
+
+    const Fraction operator- (const Fraction& frac, float num)
+    {
+        return Fraction(frac.numerator / num, frac.denominator);  // IMPLEMENTION LATER
+    }
+
+    const Fraction operator* (const Fraction& frac, float num)
+    {
+        return Fraction(frac.numerator / num, frac.denominator);  // IMPLEMENTION LATER
+    }
+
+    const Fraction operator/ (const Fraction& frac, float num)
+    {
+        return Fraction(frac.numerator / num, frac.denominator);  // IMPLEMENTION LATER
+    }
+
+    const Fraction operator/ (float num, const Fraction& frac)
+    {
+        return Fraction(frac.numerator / num, frac.denominator);  // IMPLEMENTION LATER
+    }
+
+    bool operator== (Fraction& frac1, Fraction& frac2)
+    {
+        return true;
+    }
+
+    bool operator> (Fraction& frac1, Fraction& frac2)
+    {
+        return true;
+    }
+
+    bool operator< (Fraction& frac1, Fraction& frac2)
+    {
+        return true;
+    }
+
+    bool operator>= (Fraction& frac1, Fraction& frac2)
+    {
+        return true;
+    }
+
+    bool operator<= (Fraction& frac1, Fraction& frac2)
+    {
+        return true;
+    }
+
+    bool operator== (Fraction& frac, float num)
+    {
+        return true;
+    }
+
+    bool operator> (Fraction& frac, float num)
+    {
+        return true;
+    }
+
+    bool operator< (Fraction& frac, float num)
+    {
+        return true;
+    }
+
+    bool operator>= (Fraction& frac, float num)
+    {
+        return true;
+    }
+
+    bool operator<= (Fraction& frac, float num)
+    {
+        return true;
     }
 }

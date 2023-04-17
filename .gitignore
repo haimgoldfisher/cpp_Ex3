@@ -30,7 +30,3 @@
 *.exe
 *.out
 *.app
-
-# vscode folder & gitignore
-.gitignore
-vscode/
