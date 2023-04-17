@@ -22,7 +22,7 @@ namespace ariel
         Fraction& reduce(); // it simplies the frac 
         Fraction operator-() const { return Fraction(-this->numerator, this->denominator);} // form of -n/m
         friend ostream& operator<< (ostream&, const Fraction&); // for output stream 
-        friend istream& operator>> (istream&, const Fraction&); // for input stream
+        friend istream& operator>> (istream&, Fraction&); // for input stream
         Fraction operator+(const Fraction& other) const;
         Fraction operator-(const Fraction& other) const;
         Fraction operator*(const Fraction& other) const;

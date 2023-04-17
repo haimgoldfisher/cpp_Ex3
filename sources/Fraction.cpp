@@ -54,9 +54,11 @@ namespace ariel
         return (os << frac.numerator << '/' << frac.denominator);
     }
 
-    istream& operator>> (istream& is, const Fraction& frac)
+    istream& operator>> (istream& is, Fraction& frac)
     {
-        return is;  // implement later
+        int numerator, denominator; // implement later
+        frac = Fraction(numerator, denominator);
+        return is;
     }
 
     Fraction Fraction::operator+(const Fraction& other) const

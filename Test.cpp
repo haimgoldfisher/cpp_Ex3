@@ -106,15 +106,28 @@ TEST_CASE("Fraction & Float Division TEST:")
 
 TEST_CASE("Fraction Equalities TEST:")
 {
-    Fraction a(1,2), b(1,3);
-    Fraction c = -a; // -1/2
-    CHECK(a > c); // 1/2 > -1/2
-    CHECK(a >= 0.5);
-    CHECK(0.5 == a);
-    CHECK(a <= 0.5);
-    CHECK_FALSE(!(b < a));
-    CHECK(c <= b);
-    CHECK((a > b) + (c < b) == 2); // both true
+    Fraction a(1,2), b(1,3), c(2,4), d(-1,2), e(0,1);
+    // == :
+    CHECK(a == c);
+    CHECK(c == a); 
+    CHECK(a == 0.5); // 1/2 == 0.5
+    CHECK(-0.5 == d);
+    CHECK(e == 0);
+    CHECK(0 == e);
+    // !=
+    CHECK(a != b); // 1/2 != 1/3
+    CHECK(b != a); 
+    CHECK(a != d);
+    CHECK(d != a);
+    // > , < , >=, >=
+    CHECK(d < a); // -1/2 < 1/2
+    CHECK(d <= a); // -1/2 >= 1/2
+    CHECK(a > d);
+    CHECK(a >= d);
+    CHECK(a > b);
+    CHECK(a >= b); // 1/2 >= 1/3
+    CHECK(b < a);
+    CHECK(b <= a);
 }
 
 TEST_CASE("Fraction Prefix TEST:")
@@ -152,4 +165,43 @@ TEST_CASE("Fraction Postfix TEST:")
     // POSTFIX METHOD TEST:
     Fraction postfix(1/2);
     CHECK_NOTHROW(postfix++);
+}
+
+TEST_CASE("Output Stream TEST:")
+{
+    Fraction a(1,3), b(-1,1);
+    Fraction c = -a;
+    CHECK_NOTHROW(cout << "frac a: " << a << endl); // frac a: 1/3
+    CHECK_NOTHROW(cout << "frac b: " << b << endl); // frac b: -1/1
+}
+
+TEST_CASE("Input Stream TEST:")
+{
+    istringstream input("1 3");
+    Fraction a(1,1);
+    CHECK_NOTHROW(input >> a); // update 'a' to 1/3
+    CHECK(a.getTop() == 1);
+    CHECK(a.getBottom() == 3);
+
+    input.clear();
+    string in1 = "-1 2";
+    input.str(in1);
+    CHECK_NOTHROW(input >> a); // update 'b' to -1/2
+    CHECK(a.getTop() == -1);
+    CHECK(a.getBottom() == 2);
+
+    input.clear();
+    string in2 = "a 1"; // bad input case A (Accept Only Int)
+    input.str(in2);
+    CHECK_THROWS(input >> a);
+    
+    input.clear();
+    string in3 = "3 1 1"; // bad input case B (Too Many Args)
+    input.str(in3);
+    CHECK_THROWS(input >> a);
+
+    input.clear();
+    string in4 = "1 0"; // bad input case C (Divide By Zero)
+    input.str(in4);
+    CHECK_THROWS(input >> a);
 }
