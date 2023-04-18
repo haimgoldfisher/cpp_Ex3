@@ -186,7 +186,7 @@ TEST_CASE("Input Stream TEST:")
     input.clear();
     string in1 = "-1 2";
     input.str(in1);
-    CHECK_NOTHROW(input >> a); // update 'b' to -1/2
+    CHECK_NOTHROW(input >> a); // update 'a' to -1/2
     CHECK(a.getTop() == -1);
     CHECK(a.getBottom() == 2);
 
@@ -204,4 +204,19 @@ TEST_CASE("Input Stream TEST:")
     string in4 = "1 0"; // bad input case C (Divide By Zero)
     input.str(in4);
     CHECK_THROWS(input >> a);
+}
+
+TEST_CASE("Dealing With Illegal Float TEST:")
+{
+    Fraction a(0,1); // == 0
+    float badFloat = 0.00001; // convert to 0/1 or throw excption when try to cast to Fraction???
+    // CASE A: Throw Exception:
+    CHECK_THROWS(a - badFloat);
+    CHECK_THROWS(badFloat + a);
+
+    // CASE B: Cast To 0/1:
+    // CHECK(a == badFloat);
+    // CHECK_FALSE(badFloat > a);
+    // CHECK_NOTHROW(a - badFloat);
+    // CHECK_NOTHROW(badFloat + a);
 }
