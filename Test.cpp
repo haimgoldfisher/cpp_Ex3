@@ -3,9 +3,22 @@
 #include "doctest.h"
 #include <stdexcept>
 using namespace std;
-
 #include "sources/Fraction.hpp"
 using namespace ariel;
+
+/*
+
+A number of preliminary assumptions that I used in my tests:
+
+1) getTop(): getter function that returns the Fraction's numerator.
+2) getBottom(): getter function that returns the Fraction's denominator.
+   * You can change it to YOUR getters by using "Change All Occurrences" (ctrl+F2).*
+3) No empty ctor (= Fraction()).
+4) '++' equal to add 1/1 to Fraction: ++1/3 -> 4/3.
+5) A Float with more than 3 digits after the dot is not allowed here.
+6) Denominator cannot be negative: Fraction(1,-1) -> Fraction(-1,1) , Fraction(-1,-1) -> Fraction(1,1).
+
+*/
 
 TEST_CASE("Fraction Constructor TEST:")
 {
