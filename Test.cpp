@@ -2,20 +2,46 @@
 
 #include "doctest.h"
 #include <stdexcept>
+using namespace std;
 
 #include "sources/Fraction.hpp"
 using namespace ariel;
 
 TEST_CASE("Fraction Constructor TEST:")
 {
+    // CREATE FRACTION FROM TWO INTEGERS:
     CHECK_NOTHROW(Fraction(1, 1));
     CHECK_NOTHROW(Fraction(-1, 1));
     CHECK_NOTHROW(Fraction(1, -1));
     CHECK_NOTHROW(Fraction(-1, -1));
     CHECK_THROWS(Fraction(5, 0)); // CANNOT DIVIDE BY ZERO
+
+    // CREATE FRACTION FROM VALID FLOAT (CAST TO FRACTION):
+    CHECK_NOTHROW(Fraction(0.5));
+    CHECK_NOTHROW(Fraction(-1.25));
+    CHECK_NOTHROW(Fraction(0.000));
+    CHECK_NOTHROW(Fraction(-0.000));
+    CHECK_THROWS(Fraction(0.0000006)); // cannot create a fraction from float with more than 3 digits after the dot
+    CHECK_THROWS(Fraction(1/3)); // 0.3333333333... is not valid float
+    CHECK_NOTHROW(Fraction(1/2)); // 0.5 is OK
+    // CHECK_NOTHROW(Fraction(1/3)); // 0.333333333... is OK
+    // CHECK_NOTHROW(Fraction(0.0000006)); // taking only 3 digits after the dot, ignore the rest
 }
 
-TEST_CASE("Fraction Simplifying (Reducing) TEST:")
+TEST_CASE("No Negative Denominator TEST:")
+{
+    // TRUE BY DEFINITION:
+    Fraction a(-1,1), b(1,-1), c(-1,-1), d(1,1);
+    CHECK((a.getTop() == -1) + (a.getBottom() == 1) == 2); // both must be true since -1/1 == -1/1
+    CHECK((b.getTop() == -1) + (b.getBottom() == 1) == 2); // both must be true since 1/-1 == -1/1
+    CHECK((c.getTop() == 1) + (c.getBottom() == 1) == 2); // both must be true since -1/-1 == 1/1
+
+    // ALWAYS TRUE:
+    CHECK(a == b); // -1/1 == 1/-1
+    CHECK(c == d); // -1/-1 == 1/1
+}
+
+TEST_CASE("Fractions Equivalence TEST")
 {
     Fraction a(1,2), b(2,4), c(3,6), d(4,8);
     CHECK(a == b); // 1/2 == 2/4
@@ -70,19 +96,66 @@ TEST_CASE("Only Fraction Division TEST:")
     CHECK(g == a);
 }
 
+TEST_CASE("Fraction Simplifying (Reduced Form) TEST:")
+{
+    // Assume that arithmetic operations (+,-,*,/) also simplify the fraction:
+    Fraction a(2,2); // 2/2 == 1
+    Fraction b = a + a; // 2/2 + 2/2 = 4/2 -> (simplify) -> 2/1
+    CHECK((b.getTop() == 2) + (b.getBottom() == 1) == 2); // both must be true
+    Fraction c(5,20), d(12,24); // 1/4 & 1/2 
+    Fraction e = d - c; // 12/24 - 5/20 = 60/120 - 30/120 = 30/120 -> (simplify) -> 1/4
+    CHECK((e.getTop() == 1) + (e.getBottom() == 4) == 2); // both must be true
+    Fraction f = a / c; // 2/2 / 5/20 = 40/10 -> (simplify) -> 4/1
+    CHECK((f.getTop() == 4) + (f.getBottom() == 1) == 2); // both must be true
+    Fraction g(-14,21); // -2/3
+    Fraction h = g*g; // -14/21 * -14/21 = 196/441 -> (simply) -> 4/9
+    CHECK((h.getTop() == 4) + (h.getBottom() == 9) == 2); // both must be true
+    Fraction i(0,12); // == 0
+    Fraction j = i + i + i; // ((0/12 + 0/12 -> (simplify) -> 0/12 -> 0/1) + 0/12) = 0/1 + 0/12 = 0/12 + 0/12 = 0/12 -> (simplify) -> 0/1 
+    CHECK((j.getTop() == 0) + (j.getBottom() == 1) == 2); // both must be true
+}
+
 TEST_CASE("Fraction & Float Addition TEST:")
 {
-
+    Fraction a(1,2), b(-1,4), c(1,4);
+    Fraction d = c + 0.25; // 1/4 + 0.25 = 1/2
+    CHECK(a == d); // 1/2 == 1/2
+    Fraction e = 0.5 + b; // 0.5 + (-1/4) = 1/4
+    CHECK(e == c); // 1/4 == 1/4
+    Fraction f(3/4);
+    Fraction g = b + 1; // -1/4 + 1 = -1/4 + 4/4 = 3/4
+    CHECK(f == g);
+    Fraction h = 0 + b; // 0 + -1/4 = -1/4
+    CHECK(h == b); // -1/4 == -1/4
 }
 
 TEST_CASE("Fraction & Float Subtraction TEST:")
 {
-
+    Fraction a(1,2), b(-1,4), c(1,4);
+    Fraction d = a - 0.25; // 1/2 - 0.25 = 1/4
+    CHECK(c == d); // 1/4 == 1/4
+    Fraction e = 0.5 - c; // 0.5 - 1/4 = 1/4
+    CHECK(e == c); // 1/4 == 1/4
+    Fraction f(3/4);
+    Fraction g = f - 1; // -3/4 - 1 = -3/4 + 4/4 = 1/4
+    CHECK(c == g);
+    Fraction h = 0 - c; // 0 - 1/4 = -1/4
+    CHECK(h == b); // -1/4 == -1/4
 }
 
 TEST_CASE("Fraction & Float Multiplication TEST:")
 {
-
+    Fraction a(1,2), b(1,4), c(-1,2), d(3/2);
+    Fraction e = a * 3; // 1/2 * 3 = 3/2
+    CHECK(e == d); // 3/2 == 3/2
+    Fraction f = 1.5 * b; // 3/2 * 1/4 = 6/4 * 1/4 = 6/16 = 3/8
+    Fraction g(3,8);
+    CHECK(g == f); //  3/8 == 3/8
+    Fraction h = -1 * a; // -1 * 1/2 = -1/2
+    Fraction i = c * 1; // -1/2 * 1 = -1/2
+    CHECK(h == i);
+    Fraction j = 0 * c; // 0 * -1/2 == 0/1
+    CHECK(j == 0);
 }
 
 TEST_CASE("Fraction & Float Division TEST:")
