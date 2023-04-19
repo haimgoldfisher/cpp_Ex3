@@ -9,19 +9,17 @@ using namespace std;
 
 namespace ariel
 {
-    Fraction::Fraction(int top, int bottom) // ctor: numerator & denominator
+    Fraction::Fraction(int top, int bottom) : numerator(top), denominator(bottom) // initialization list - ctor from 2 ints
     {
         // if (bottom == 0)
         // {
         //     throw logic_error("CANNOT DIVIDE BY ZERO");
         // }
-        this->numerator = top;
-        this->denominator = bottom;
     }
 
-    Fraction::Fraction(float num) // ctor: float casting to fraction
+    Fraction::Fraction(float num) : numerator(num*1000), denominator(1000) // initialization list - ctor from a float
     {
-        this->numerator = this->denominator = num;
+        // maybe i should simply this Fraction now
     }
 
     int Fraction::getTop()
