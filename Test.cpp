@@ -56,31 +56,36 @@ TEST_CASE("No Negative Denominator TEST:")
 
 TEST_CASE("Fractions Equivalence TEST")
 {
-    Fraction a(1,2), b(2,4), c(3,6), d(4,8);
-    CHECK(a == b); // 1/2 == 2/4
-    CHECK(a == c); // 1/2 == 3/6
-    CHECK(a == d); // 1/2 == 4/8
+    // Fraction VS Float:
+    Fraction a(1,2);
+    CHECK(a == Fraction(2,4)); // 1/2 == 2/4
+    CHECK(a == Fraction(3,6)); // 1/2 == 3/6
+    CHECK(a == Fraction(4,8)); // 1/2 == 4/8
     CHECK(a == 0.5); // 1/2 == 0.5
-    CHECK(0.5 == b); // 0.5 == 2/4
+    CHECK(0.5 == Fraction(21,42)); // 0.5 == 21/42
+
+    // Fraction Ctors:
+    CHECK(a == Fraction(1/2));
+    CHECK(a == Fraction(0.5));
 }
 
 TEST_CASE("Only Fraction Addition TEST:")
 {
-    Fraction a(1,2), b(1,4), c(3,4), g(0,1);
-    Fraction d = a + b; // 1/2 + 1/4 = 2/4 + 1/4 = 3/4
-    CHECK(c == d); // 3/4 == 3/4
-    Fraction e = -a; // e = -1/2
-    Fraction f = e + a; // -1/2 + 1/2 = 0/2
-    CHECK(f == g); // 0/2 == 0
+    Fraction a(1,2);
+    Fraction b = a + Fraction(1,4); // 1/2 + 1/4 = 2/4 + 1/4 = 3/4
+    CHECK(Fraction(3,4) == b); // 3/4 == 3/4
+    Fraction c = -a; // c = -1/2
+    Fraction d = c + a; // -1/2 + 1/2 = 0/2
+    CHECK(d == Fraction(0,1)); // 0/2 == 0
 }
 
 TEST_CASE("Only Fraction Subtraction TEST:")
 {
-    Fraction a(1,2), b(1,4), c(0,1);
+    Fraction a(1,2), b(1,4);
     Fraction d = a - b; // 1/2 - 1/4 == 1/4
     CHECK(d == b); // 1/4 == 1/4
     Fraction e = a - a; // 1/2 - 1/2 = 0/2
-    CHECK(e == c); // 0/2 == 0
+    CHECK(e == Fraction(0,1)); // 0/2 == 0
 }
 
 TEST_CASE("Only Fraction Multiplication TEST:")
@@ -102,7 +107,7 @@ TEST_CASE("Only Fraction Division TEST:")
     Fraction a(1,2), b(1,1);
     Fraction c = a / a; // 1/2 / 1/2 = 1/1
     CHECK(c == b);
-    Fraction d(1,4), e(2/1);
+    Fraction d(1,4), e(2,1);
     Fraction f = a / d; // 1/2 / 1/4 = 2/1 = 2
     Fraction g = d / a; // 1/4 / 1/2 = 1/2
     CHECK(f == e);
@@ -135,7 +140,7 @@ TEST_CASE("Fraction & Float Addition TEST:")
     CHECK(a == d); // 1/2 == 1/2
     Fraction e = 0.5 + b; // 0.5 + (-1/4) = 1/4
     CHECK(e == c); // 1/4 == 1/4
-    Fraction f(3/4);
+    Fraction f(3,4);
     Fraction g = b + 1; // -1/4 + 1 = -1/4 + 4/4 = 3/4
     CHECK(f == g);
     Fraction h = 0 + b; // 0 + -1/4 = -1/4
@@ -149,7 +154,7 @@ TEST_CASE("Fraction & Float Subtraction TEST:")
     CHECK(c == d); // 1/4 == 1/4
     Fraction e = 0.5 - c; // 0.5 - 1/4 = 1/4
     CHECK(e == c); // 1/4 == 1/4
-    Fraction f(3/4);
+    Fraction f(3,4);
     Fraction g = f - 1; // -3/4 - 1 = -3/4 + 4/4 = 1/4
     CHECK(c == g);
     Fraction h = 0 - c; // 0 - 1/4 = -1/4
@@ -158,7 +163,7 @@ TEST_CASE("Fraction & Float Subtraction TEST:")
 
 TEST_CASE("Fraction & Float Multiplication TEST:")
 {
-    Fraction a(1,2), b(1,4), c(-1,2), d(3/2);
+    Fraction a(1,2), b(1,4), c(-1,2), d(3,2);
     Fraction e = a * 3; // 1/2 * 3 = 3/2
     CHECK(e == d); // 3/2 == 3/2
     Fraction f = 1.5 * b; // 3/2 * 1/4 = 6/4 * 1/4 = 6/16 = 3/8
@@ -173,7 +178,7 @@ TEST_CASE("Fraction & Float Multiplication TEST:")
 
 TEST_CASE("Fraction & Float Division TEST:")
 {
-    Fraction a(1/2);
+    Fraction a(1,2);
     Fraction b = -a; // -1/2
     CHECK(-0.5 == b);
     CHECK(b == -0.5);
@@ -183,11 +188,20 @@ TEST_CASE("Fraction & Float Division TEST:")
     Fraction d = 0/a;
     CHECK(0 == d);
     Fraction e = a/3; // (1/2 / 3) = (1/2 / 3000/1000) = (1/2 / 3/1) = 1/6
-    Fraction f(1/6);
+    Fraction f(1,6);
     CHECK(e == f);
-    Fraction g(1/1), h(1/3);
-    Fraction i = g/3; // (1/1 / 3) = (1/1 / 3000/1000) = (1/1 / 3/1) = 1/3
-    CHECK(h == i);
+    Fraction g = Fraction(1,1)/3; // (1/1 / 3) = (1/1 / 3000/1000) = (1/1 / 3/1) = 1/3
+    CHECK(Fraction(1,3) == g);
+}
+
+TEST_CASE("Chain Of Operators TEST:")
+{
+    Fraction a = 0.5 + Fraction(0,1) * 1.7 -0.3; // 0.5 + 0 - 0.3 = 0.2 = 1/5
+    CHECK(a == Fraction(1,5));
+    Fraction b = Fraction(4,5) + 1 / Fraction(1,2) - 2.25; // 0.8 + 2 - 2.25 = 0.55
+    CHECK(Fraction(55,100) == b);
+    Fraction c = -2 + Fraction(1,8) * Fraction(4,1) - 0.25; // -2 + 0.5 - 0.25 = -1.75
+    CHECK(c == Fraction(-7,4));
 }
 
 TEST_CASE("Fraction Equalities TEST:")
@@ -214,6 +228,15 @@ TEST_CASE("Fraction Equalities TEST:")
     CHECK(a >= b); // 1/2 >= 1/3
     CHECK(b < a);
     CHECK(b <= a);
+    // && , || , !
+    bool a1 = (a > b) && (c == a); // && operator
+    bool a2 = (b > 0.333) && (0.334 > b); // tricky: 0.333 < 1/3 < 0.334
+    bool a3 = (e < a) || (b > c); // || operator
+    bool a4 = !(d > a); // ! operator
+    CHECK(a1);  
+    CHECK(a2);
+    CHECK(a3);
+    CHECK(a4);
 }
 
 TEST_CASE("Fraction Prefix TEST:")
@@ -230,8 +253,8 @@ TEST_CASE("Fraction Prefix TEST:")
     CHECK(g != e);  // -2/3 != 0/3
 
     // PREFIX METHOD TEST:
-    Fraction prefix(1/2);
-    CHECK(++prefix == 1.5);
+    Fraction prefix(1,2);
+    CHECK(++prefix == 1.5); // apply ++ and then return value
     CHECK(++prefix != prefix);
 }
 
@@ -249,8 +272,9 @@ TEST_CASE("Fraction Postfix TEST:")
     CHECK(g != e);  // -2/3 != 0/3
 
     // POSTFIX METHOD TEST:
-    Fraction postfix(1/2);
-    CHECK_NOTHROW(postfix++);
+    Fraction postfix(1,2);
+    bool post = (postfix++ == 0.5); // return value and then apply ++ 
+    CHECK(post);
 }
 
 TEST_CASE("Output Stream TEST:")
