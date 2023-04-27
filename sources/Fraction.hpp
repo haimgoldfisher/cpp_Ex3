@@ -15,8 +15,8 @@ namespace ariel
         public:
         Fraction(int, int); // ctor using int for numerator & int for denominator
         Fraction(float); // ctor for creating a fraction from a float
-        int getTop(); // numerator getter
-        int getBottom(); // denominator getter
+        int getNumerator(); // numerator getter
+        int getDenominator(); // denominator getter
         void setTop(int); // numerator setter
         void setBottom(int); // denominator setter
         Fraction& reduce(); // it simplies the frac 

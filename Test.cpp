@@ -10,13 +10,13 @@ using namespace ariel;
 
 A number of preliminary assumptions that I used in my tests:
 
-1) getTop(): getter function that returns the Fraction's numerator.
-2) getBottom(): getter function that returns the Fraction's denominator.
+1) getNumerator(): getter function that returns the Fraction's numerator.
+2) getDenominator(): getter function that returns the Fraction's denominator.
    * You can change it to YOUR getters by using "Change All Occurrences" (ctrl+F2).*
 3) No empty ctor (= Fraction()).
 4) '++' equal to add 1/1 to Fraction: ++1/3 -> 4/3.
-5) A Float with more than 3 digits after the dot is not allowed here.
-6) Denominator cannot be negative: Fraction(1,-1) -> Fraction(-1,1) , Fraction(-1,-1) -> Fraction(1,1).
+5) A Float with more than 3 digits after the dot is allowed here.
+6) Denominator cannot be negative: Fraction(1,-1) -> Fraction(-1,1) , Fraction(-1,-1) -> Fraction(1,1). 
 
 */
 
@@ -34,20 +34,20 @@ TEST_CASE("Fraction Constructor TEST:")
     CHECK_NOTHROW(Fraction(-1.25));
     CHECK_NOTHROW(Fraction(0.000));
     CHECK_NOTHROW(Fraction(-0.000));
-    CHECK_THROWS(Fraction(0.0000006)); // cannot create a fraction from float with more than 3 digits after the dot
-    CHECK_THROWS(Fraction(1/3)); // 0.3333333333... is not valid float
+    // CHECK_THROWS(Fraction(0.0000006)); // cannot create a fraction from float with more than 3 digits after the dot
+    // CHECK_THROWS(Fraction(1/3)); // 0.3333333333... is not valid float
     CHECK_NOTHROW(Fraction(1/2)); // 0.5 is OK
-    // CHECK_NOTHROW(Fraction(1/3)); // 0.333333333... is OK
-    // CHECK_NOTHROW(Fraction(0.0000006)); // taking only 3 digits after the dot, ignore the rest
+    CHECK_NOTHROW(Fraction(1/3)); // 0.333333333... is OK
+    CHECK_NOTHROW(Fraction(0.0000006)); // taking only 3 digits after the dot, ignore the rest
 }
 
 TEST_CASE("No Negative Denominator TEST:")
 {
     // TRUE BY DEFINITION:
     Fraction a(-1,1), b(1,-1), c(-1,-1), d(1,1);
-    CHECK((a.getTop() == -1) + (a.getBottom() == 1) == 2); // both must be true since -1/1 == -1/1
-    CHECK((b.getTop() == -1) + (b.getBottom() == 1) == 2); // both must be true since 1/-1 == -1/1
-    CHECK((c.getTop() == 1) + (c.getBottom() == 1) == 2); // both must be true since -1/-1 == 1/1
+    CHECK((a.getNumerator() == -1) + (a.getDenominator() == 1) == 2); // both must be true since -1/1 == -1/1
+    CHECK((b.getNumerator() == -1) + (b.getDenominator() == 1) == 2); // both must be true since 1/-1 == -1/1
+    CHECK((c.getNumerator() == 1) + (c.getDenominator() == 1) == 2); // both must be true since -1/-1 == 1/1
 
     // ALWAYS TRUE:
     CHECK(a == b); // -1/1 == 1/-1
@@ -119,18 +119,18 @@ TEST_CASE("Fraction Simplifying (Reduced Form) TEST:")
     // Assume that arithmetic operations (+,-,*,/) also simplify the fraction:
     Fraction a(2,2); // 2/2 == 1
     Fraction b = a + a; // 2/2 + 2/2 = 4/2 -> (simplify) -> 2/1
-    CHECK((b.getTop() == 2) + (b.getBottom() == 1) == 2); // both must be true
+    CHECK((b.getNumerator() == 2) + (b.getDenominator() == 1) == 2); // both must be true
     Fraction c(5,20), d(12,24); // 1/4 & 1/2 
     Fraction e = d - c; // 12/24 - 5/20 = 60/120 - 30/120 = 30/120 -> (simplify) -> 1/4
-    CHECK((e.getTop() == 1) + (e.getBottom() == 4) == 2); // both must be true
+    CHECK((e.getNumerator() == 1) + (e.getDenominator() == 4) == 2); // both must be true
     Fraction f = a / c; // 2/2 / 5/20 = 40/10 -> (simplify) -> 4/1
-    CHECK((f.getTop() == 4) + (f.getBottom() == 1) == 2); // both must be true
+    CHECK((f.getNumerator() == 4) + (f.getDenominator() == 1) == 2); // both must be true
     Fraction g(-14,21); // -2/3
     Fraction h = g*g; // -14/21 * -14/21 = 196/441 -> (simply) -> 4/9
-    CHECK((h.getTop() == 4) + (h.getBottom() == 9) == 2); // both must be true
+    CHECK((h.getNumerator() == 4) + (h.getDenominator() == 9) == 2); // both must be true
     Fraction i(0,12); // == 0
     Fraction j = i + i + i; // ((0/12 + 0/12 -> (simplify) -> 0/12 -> 0/1) + 0/12) = 0/1 + 0/12 = 0/12 + 0/12 = 0/12 -> (simplify) -> 0/1 
-    CHECK((j.getTop() == 0) + (j.getBottom() == 1) == 2); // both must be true
+    CHECK((j.getNumerator() == 0) + (j.getDenominator() == 1) == 2); // both must be true
 }
 
 TEST_CASE("Fraction & Float Addition TEST:")
@@ -290,15 +290,15 @@ TEST_CASE("Input Stream TEST:")
     istringstream input("1 3");
     Fraction a(1,1);
     CHECK_NOTHROW(input >> a); // update 'a' to 1/3
-    CHECK(a.getTop() == 1);
-    CHECK(a.getBottom() == 3);
+    CHECK(a.getNumerator() == 1);
+    CHECK(a.getDenominator() == 3);
 
     input.clear();
     string in1 = "-1 2";
     input.str(in1);
     CHECK_NOTHROW(input >> a); // update 'a' to -1/2
-    CHECK(a.getTop() == -1);
-    CHECK(a.getBottom() == 2);
+    CHECK(a.getNumerator() == -1);
+    CHECK(a.getDenominator() == 2);
 
     input.clear();
     string in2 = "a 1"; // bad input case A (Accept Only Int)
@@ -321,12 +321,12 @@ TEST_CASE("Dealing With Illegal Float TEST:")
     Fraction a(0,1); // == 0
     float badFloat = 0.00001; // convert to 0/1 or throw excption when try to cast to Fraction???
     // CASE A: Throw Exception:
-    CHECK_THROWS(a - badFloat);
-    CHECK_THROWS(badFloat + a);
+    // CHECK_THROWS(a - badFloat);
+    // CHECK_THROWS(badFloat + a);
 
     // CASE B: Cast To 0/1:
-    // CHECK(a == badFloat);
-    // CHECK_FALSE(badFloat > a);
-    // CHECK_NOTHROW(a - badFloat);
-    // CHECK_NOTHROW(badFloat + a);
+    CHECK(a == badFloat);
+    CHECK_FALSE(badFloat > a);
+    CHECK_NOTHROW(a - badFloat);
+    CHECK_NOTHROW(badFloat + a);
 }

@@ -22,12 +22,12 @@ namespace ariel
         // maybe i should simply this Fraction now
     }
 
-    int Fraction::getTop()
+    int Fraction::getNumerator()
     {
         return this->numerator;
     }
 
-    int Fraction::getBottom()
+    int Fraction::getDenominator()
     {
         return this->denominator;
     }
