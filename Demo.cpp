@@ -73,6 +73,19 @@ int main() {
     cout << "1/2 / 2 = " << my / 2 << " (should return 1/4)" << endl;
     cout << "3 / 1/4 = " << 3 / Fraction(1,4) << " (should return 12/1)" << endl;
     cout << "1/3 / -1 = " << Fraction(1,3) / -1 << " (should return -1/3)" << endl;
-    cout << "-1/2 / 0.5 = " << -my / 0.5 << " (should return -1/1)" << endl;    
+    cout << "-1/2 / 0.5 = " << -my / 0.5 << " (should return -1/1)" << endl;   
+
+    cout << endl << "OVERFLOW DEMO:" << endl;
+    cout << "max_int() / max_int()-1 * max_int() / max_int()-1 = ";
+    try
+    {
+        cout << Fraction(MAX_INT, MAX_INT-1) * Fraction(MAX_INT, MAX_INT-1);
+    }
+    catch(const exception& e)
+    {
+        cerr << e.what();
+    }
+    cout << " (should return OVERFLOW ERROR)" << endl;
+     
 
 }

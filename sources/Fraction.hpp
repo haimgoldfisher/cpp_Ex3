@@ -2,8 +2,11 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <limits>
 using namespace std;
 
+constexpr int MAX_INT = numeric_limits<int>::max(); // for overflow
+constexpr int MIN_INT = numeric_limits<int>::min(); // for overflow
 
 namespace ariel
 {
@@ -68,4 +71,5 @@ namespace ariel
 
     long long __lcm(int, int); // Lowest Common Multiple
     void overFlowCheck(long long, long long); // OverFlow Checking
+    void reduceNums(long long&, long long&); // Avoid OverFlow Error
 }

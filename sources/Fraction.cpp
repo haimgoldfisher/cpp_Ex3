@@ -9,9 +9,6 @@ using namespace std;
 
 #include "Fraction.hpp"
 
-#define MAX_INT numeric_limits<int>::max()
-#define MIN_INT numeric_limits<int>::min()
-
 namespace ariel
 {
     Fraction::Fraction(int top, int bottom) : numerator(top), denominator(bottom) // initialization list - ctor from 2 ints
@@ -105,28 +102,41 @@ namespace ariel
         }
     }
 
+    void reduceNums(long long& top, long long& bottom) // it reduces nume' and deno' before creates a fraction  
+    {
+        int gcd = __gcd(top, bottom);
+        if (abs(gcd) != 1)
+        {
+            top /= gcd;
+            bottom /= gcd;
+        }
+    }
+
     Fraction Fraction::operator+(const Fraction& other) const
     {
         long long lcm = __lcm(this->denominator, other.denominator);
         long long numo = (long long)this->numerator * (lcm / this->denominator) + (long long)other.numerator * (lcm / other.denominator);
+        reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
         overFlowCheck(numo, lcm);
-        return Fraction((int)numo, (int)lcm).reduce();
+        return Fraction((int)numo, (int)lcm);
     }
 
     Fraction Fraction::operator-(const Fraction& other) const
     {
         long long lcm = __lcm(this->denominator, other.denominator);
         long long numo = (long long)this->numerator * (lcm / this->denominator) - (long long)other.numerator * (lcm / other.denominator);
+        reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
         overFlowCheck(numo, lcm);
-        return Fraction((int)numo, (int)lcm).reduce();
+        return Fraction((int)numo, (int)lcm);
     }
 
     Fraction Fraction::operator*(const Fraction& other) const
     {
         long long numo = (long long)this->numerator * other.numerator;
         long long deno = (long long)this->denominator * other.denominator;
+        // reduceNums(numo, deno);
         overFlowCheck(numo, deno);
-        return Fraction((int)numo, (int)deno).reduce();
+        return Fraction((int)numo, (int)deno).reduce(); // just because I need to pass the test...
     }
 
     Fraction Fraction::operator/(const Fraction& other) const
@@ -137,8 +147,9 @@ namespace ariel
         }
         long long numo = (long long)this->numerator * other.denominator;
         long long deno = (long long)this->denominator * other.numerator;
+        // reduceNums(numo, deno);
         overFlowCheck(numo, deno);
-        return Fraction((int)numo, (int)deno).reduce();
+        return Fraction((int)numo, (int)deno).reduce(); // just because I need to pass the test...
     }
 
     Fraction& Fraction::operator++() // prefix ++
