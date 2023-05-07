@@ -85,7 +85,7 @@ namespace ariel
         return is; // return the stream without it two first args
     }
 
-    long long __lcm(int a, int b) // Lowest Common Multiple, for efficient +/- operations
+    long long _lcm(int a, int b) // Lowest Common Multiple, for efficient +/- operations
     {
         return ((long long)a*b) / __gcd(a, b);
     }
@@ -114,7 +114,7 @@ namespace ariel
 
     Fraction Fraction::operator+(const Fraction& other) const
     {
-        long long lcm = __lcm(this->denominator, other.denominator);
+        long long lcm = _lcm(this->denominator, other.denominator);
         long long numo = (long long)this->numerator * (lcm / this->denominator) + (long long)other.numerator * (lcm / other.denominator);
         reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
         overFlowCheck(numo, lcm);
@@ -123,7 +123,7 @@ namespace ariel
 
     Fraction Fraction::operator-(const Fraction& other) const
     {
-        long long lcm = __lcm(this->denominator, other.denominator);
+        long long lcm = _lcm(this->denominator, other.denominator);
         long long numo = (long long)this->numerator * (lcm / this->denominator) - (long long)other.numerator * (lcm / other.denominator);
         reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
         overFlowCheck(numo, lcm);

@@ -69,7 +69,7 @@ namespace ariel
         friend bool operator<= (float num, const Fraction& frac) {return Fraction(num) <= frac;}
     };
 
-    long long __lcm(int, int); // Lowest Common Multiple
+    long long _lcm(int, int); // Lowest Common Multiple
     void overFlowCheck(long long, long long); // OverFlow Checking
     void reduceNums(long long&, long long&); // Avoid OverFlow Error
 }
