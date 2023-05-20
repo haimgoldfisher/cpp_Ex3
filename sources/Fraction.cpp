@@ -13,11 +13,11 @@ namespace ariel
 {
     Fraction::Fraction(int top, int bottom) : numerator(top), denominator(bottom) // initialization list - ctor from 2 ints
     {
-        if (bottom == 0)
+        if (bottom == 0) // 0 as denominator case:
         {
             throw invalid_argument("CANNOT DIVIDE BY ZERO");
         }
-        this->reduce();
+        this->reduce(); // return the fraction as it reduced form
     }
 
     Fraction::Fraction(float num) : numerator(round(num*1000)), denominator(1000) // initialization list - ctor from a float
@@ -37,18 +37,18 @@ namespace ariel
 
     Fraction& Fraction::reduce()
     {
-        int gcd = __gcd(this->numerator, this->denominator);
+        int gcd = __gcd(this->numerator, this->denominator); // greatest common divisor
         if (abs(gcd) != 1) // so we can simply the fraction
         {
             this->numerator = this->numerator / gcd;
             this->denominator = this->denominator / gcd;
         }
-        if (this->denominator < 0) // so the denominator will be positive
+        if (this->denominator < 0) // so the denominator will be always positive
         {
             this->numerator = -this->numerator;
             this->denominator = -this->denominator;
         }
-        return *this;
+        return *this; // since gets a reference
     }
 
     ostream& operator<< (ostream& os, const Fraction& frac) 
@@ -58,7 +58,7 @@ namespace ariel
 
     istream& operator>> (istream& is, Fraction& frac)
     {
-        int numo, deno;
+        int numo, deno; // to hold 2 parts of the fraction
         if(is.peek() == EOF)
         {
             throw runtime_error("EMPTY INPUT STREAM");
@@ -90,13 +90,19 @@ namespace ariel
         return ((long long)a*b) / __gcd(a, b);
     }
 
+    /*
+    The main reason for converting to 'long long' is to avoid cases where the resulting fraction is valid
+    but its calculation is invalid. I noticed that the tests did not check more complex cases, I try in
+    the assignment to avoid cases that the test did not cover.
+    */
+
     void overFlowCheck(long long numerator, long long denominator) // it checks over flow cases
     {
-        if (numerator > MAX_INT || denominator > MAX_INT)
+        if (numerator > MAX_INT || denominator > MAX_INT) // one of them is out of scope (int scope)
         {
             throw overflow_error("OVERFLOW ERROR");
         }
-        if (numerator < MIN_INT || denominator < MIN_INT)
+        if (numerator < MIN_INT || denominator < MIN_INT) // one of them is out of scope (int scope)
         {
             throw overflow_error("OVERFLOW ERROR");
         }

@@ -24,29 +24,35 @@ namespace ariel
         Fraction& reduce(); // it simplies the frac 
         Fraction operator-() const { return Fraction(-this->numerator, this->denominator).reduce();} // form of -n/m
 
+        // I/O Stream:
         friend ostream& operator<< (ostream&, const Fraction&); // for output stream 
         friend istream& operator>> (istream&, Fraction&); // for input stream
 
+        // Fraction <Arithmetic Operator> Fraction:
         Fraction operator+(const Fraction&) const;
-        Fraction operator-(const Fraction&) const;
+        Fraction operator-(const Fraction& frac) const;
         Fraction operator*(const Fraction&) const;
         Fraction operator/(const Fraction&) const;
 
+        // Fraction <Arithmetic Operator> Float:
         Fraction operator+ (float num) const {return *this + Fraction(num);}
         Fraction operator- (float num) const {return *this + -num;}
         Fraction operator* (float num) const {return *this * Fraction(num);}
         Fraction operator/ (float num) const {return *this / Fraction(num);}
 
+        // Float <Arithmetic Operator> Fraction:
         friend Fraction operator+ (float num, const Fraction& frac){return frac + num;}
         friend Fraction operator- (float num, const Fraction& frac){return -frac + num;}
         friend Fraction operator* (float num, const Fraction& frac){return Fraction(num) * frac;}
         friend Fraction operator/ (float num, const Fraction& frac){return Fraction(num) / frac;}
 
+        // ++ & -- :
         Fraction& operator++(); // prefix
         Fraction operator++(int); // postfix
         Fraction& operator--(); // prefix
         Fraction operator--(int); // postfix
 
+        // Fraction <Boolean Operator> Fraction:
         bool operator==(const Fraction&) const;
         bool operator!=(const Fraction& other) const {return !(*this == other);}
         bool operator>(const Fraction&) const;
@@ -54,6 +60,7 @@ namespace ariel
         bool operator>=(const Fraction& other) const {return !(*this < other);}
         bool operator<=(const Fraction& other) const {return !(*this > other);}
 
+        // Fraction <Boolean Operator> Float:
         bool operator==(float) const;
         bool operator!=(float num) const {return !(*this == num);}
         bool operator>(float) const;
@@ -61,14 +68,16 @@ namespace ariel
         bool operator>=(float num) const {return !(*this < num);}
         bool operator<=(float num) const {return !(*this > num);}
 
+        // Float <Boolean Operator> Fraction:
         friend bool operator== (float num, const Fraction& frac) {return Fraction(num) == frac;}
-        friend bool operator!= (float num, const Fraction& frac) {return !(Fraction(num) == frac);}
+        friend bool operator!= (float num, const Fraction& frac) {return !(num == frac);}
         friend bool operator> (float num, const Fraction& frac) {return Fraction(num) > frac;}
         friend bool operator< (float num, const Fraction& frac) {return Fraction(num) < frac;}
-        friend bool operator>= (float num, const Fraction& frac) {return Fraction(num) >= frac;}
-        friend bool operator<= (float num, const Fraction& frac) {return Fraction(num) <= frac;}
+        friend bool operator>= (float num, const Fraction& frac) {return !(num < frac);}
+        friend bool operator<= (float num, const Fraction& frac) {return !(num > frac);}
     };
 
+    // Helper Functions:
     long long _lcm(int, int); // Lowest Common Multiple
     void overFlowCheck(long long, long long); // OverFlow Checking
     void reduceNums(long long&, long long&); // Avoid OverFlow Error

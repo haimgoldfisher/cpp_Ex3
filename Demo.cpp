@@ -42,10 +42,10 @@ int main() {
     cout << "Fraction(float): Should print 333/1000 and print: " << Fraction(0.333) << " " << endl;
 
     cout << endl << "LCM function (self check):" << endl;
-    cout << "The LCM of 4 & 6 is: " << ariel::__lcm(4, 12) << " (should return 12)" << endl;
-    cout << "The LCM of 4 & 2 is: " << ariel::__lcm(4, 2) << " (should return 4)" << endl;
-    cout << "The LCM of 5 & 7 is: " << ariel::__lcm(5, 7) << " (should return 35)" << endl;
-    cout << "The LCM of 10 & 10 is: " << ariel::__lcm(10, 10) << " (should return 10)" << endl;
+    cout << "The LCM of 4 & 6 is: " << ariel::_lcm(4, 12) << " (should return 12)" << endl;
+    cout << "The LCM of 4 & 2 is: " << ariel::_lcm(4, 2) << " (should return 4)" << endl;
+    cout << "The LCM of 5 & 7 is: " << ariel::_lcm(5, 7) << " (should return 35)" << endl;
+    cout << "The LCM of 10 & 10 is: " << ariel::_lcm(10, 10) << " (should return 10)" << endl;
 
     Fraction my(1,2);
     cout << endl << "+ OPERATOR:" << endl;
