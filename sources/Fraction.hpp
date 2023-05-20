@@ -30,7 +30,7 @@ namespace ariel
 
         // Fraction <Arithmetic Operator> Fraction:
         Fraction operator+(const Fraction&) const;
-        Fraction operator-(const Fraction& frac) const;
+        Fraction operator-(const Fraction&) const;
         Fraction operator*(const Fraction&) const;
         Fraction operator/(const Fraction&) const;
 
