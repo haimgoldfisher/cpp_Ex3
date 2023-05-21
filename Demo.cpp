@@ -47,6 +47,14 @@ int main() {
     cout << "The LCM of 5 & 7 is: " << ariel::_lcm(5, 7) << " (should return 35)" << endl;
     cout << "The LCM of 10 & 10 is: " << ariel::_lcm(10, 10) << " (should return 10)" << endl;
 
+    cout << endl << "reduceNums function (self check):" << endl;   
+    long long n = 12, m = 16; 
+    reduceNums(n, m);
+    cout << "Reduce 12 & 16: " << to_string(n) + ", " + to_string(m) << " (should return 3, 4)" << endl;
+    n = -7, m = 49;
+    reduceNums(n, m);
+    cout << "Reduce -7 & 49: " << to_string(n) + ", " + to_string(m) << " (should return -1, 7)" << endl;
+
     Fraction my(1,2);
     cout << endl << "+ OPERATOR:" << endl;
     cout << "1/2 + 1/2 = " << my + my << " (should return 1/1)" << endl;

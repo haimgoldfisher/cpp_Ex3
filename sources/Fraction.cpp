@@ -122,7 +122,7 @@ namespace ariel
     {
         long long lcm = _lcm(this->denominator, other.denominator);
         long long numo = (long long)this->numerator * (lcm / this->denominator) + (long long)other.numerator * (lcm / other.denominator);
-        reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
+        // reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
         overFlowCheck(numo, lcm);
         return Fraction((int)numo, (int)lcm);
     }
@@ -131,7 +131,7 @@ namespace ariel
     {
         long long lcm = _lcm(this->denominator, other.denominator);
         long long numo = (long long)this->numerator * (lcm / this->denominator) - (long long)other.numerator * (lcm / other.denominator);
-        reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
+        // reduceNums(numo, lcm); // reduce the fraction before create it to avoid overflow error
         overFlowCheck(numo, lcm);
         return Fraction((int)numo, (int)lcm);
     }
